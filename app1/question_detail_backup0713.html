@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{%static 'style.css'%}">
+  <h1>{{question.subject}}</h1>
+  <p>{{question.content}}</p>
+<h5>{{question.answer_set.count}}개의 답변이 있읍니다.</h5>
+  <div>
+      <ul>
+          {% for answer in question.answer_set.all%}
+          <li>{{answer.answer_content}}</li>
+          {% endfor %}
+
+      </ul>
+  </div>
+<form action="{%url 'app1:answer_create' question.id %} "method="post">
+{% csrf_token%}
+<textarea name="answer_content" id="answer_content" rows="15"></textarea>
+<input type="submit" value="답변등록하기" >
+</form>
+
+</body>
+</html>

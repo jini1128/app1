@@ -1,0 +1,75 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+    <form method="POST" class="post-form my-3">
+        {%csrf_token%}
+        {%if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {%for field in form%}
+                {%if field.errors%}
+                <strong>{{field.label}}</strong>
+                {{field.errors}}
+                {%endif%}
+            {%endfor%}
+
+        </div>
+        {%endif%}
+        <!--오류표시
+         {{} : 데이터에 저장, 호출, 전송(데이터와 관련된 내용을 출력할 때)
+         {%} : 어떠한 속성혹은 어떠한 조건, 어떠한 문법을 사용할 때(템플릿 태그의 속성, 문법등을 사용할 때)
+         -->
+        <div class="form-group">
+            <!--label : input태그와 연계해서 사용되는 태그
+                        input태그를 제어해서 상태를 변경하게 도와주는 태그
+                 for : 다른 태그와 결합할 때 사용하는 속성.
+                       결합하고자 하는 태그의 id값과 같아야 한다.-->
+            <label for="subject">제목</label>
+                <!--form.컬럼명.value : 오류 혹은 잘못된 연결 등 예기치 못한 상황이나
+                            사용자의 입력 실수가 있었을 때 해당 요소에 값이 있었다면
+                            그 값의 초기화를 방지해주는 템플릿 태그 문법
+                    default_if_none : 기본값을 설정하는 문법-->
+            <input type="text" class="form-control" id="subject" name="subject" value="{{form.subject.value|default_if_none:''}}">
+        </div>
+        <div>
+            <label for="content">내용</label>
+            <textarea class="form-control" name="content" id="content" rows="10">
+                {{form.content.value|default_if_none:''}}
+            </textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">저장</button>
+    </form>
+
+    {%endblock%}
+<!--form : 입력된 데이터를 전송하기 위한 태그
+
+    1. 폼이 있는 페이지 접속
+    2. 폼에 내용을 입력
+    3. 저장(전송/속성:submit)인 버튼을 눌렀을 때 폼 안쪽의 모든 데이터를 서버(로컬서버)로 전송
+    4. 장고에서는 받은 폼 데이터를 처리하기 위해 forms.py로 넘겨준다.
+    (서버는 받은 폼 데이터를 처리하기 위해 웹 프로그램으로 넘겨준다)
+    5. forms.py에서 데이터를 받은 후 views.py로 넘겨줌
+    6. views.py에서 데이터를 처리
+    7. 처리결과에 따라 페이지를 웹 서버에 전송
+    8. 로컬서버는 받은 페이지를 브라우저에 전송
+    9. 브라우저는 받은 페이지를 보여줌
+
+    폼 태그 속성
+    action : 폼을 전송할 서버 스크립트(템플릿)파일을 지정
+    name,id : 폼을 식별하기 위한 이름,아이디
+    taeget : action에서 지정한 스크립트 파일을 현재 창이 아니라 다른 위치에 열도록 지정하는 속성
+    method : 폼을 서버에 전송할 http메서드를 정하는 방법(get or post)
+            기본값은 get
+-->
+
+
+
+
+
+</div> <!--class = container 끝-->
+
+
+
+{%endblock%}
