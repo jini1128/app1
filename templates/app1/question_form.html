@@ -31,12 +31,12 @@
                             그 값의 초기화를 방지해주는 템플릿 태그 문법
                     default_if_none : 기본값을 설정하는 문법-->
             <input type="text" class="form-control" id="subject" name="subject" value="{{form.subject.value|default_if_none:''}}">
+
         </div>
         <div>
             <label for="content">내용</label>
-            <textarea class="form-control" name="content" id="content" rows="10">
-                {{form.content.value|default_if_none:''}}
-            </textarea>
+            <textarea class="form-control" name="content" id="content" rows="10">{{form.content.value|default_if_none:''}}</textarea>
+
         </div>
 
         <button type="submit" class="btn btn-primary">저장</button>
@@ -72,4 +72,3 @@
 
 
 
-{%endblock%}

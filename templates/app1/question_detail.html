@@ -1,8 +1,27 @@
 {%extends 'base.html'%}
 {%block content%}
-
+{%block script%}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".delete").on('click',function(){
+        if(confirm("정말 삭제하시겠읍니까?")){
+            location.href=$(this).data('uri');
+        }
+    });
+});
+</script>
+{%endblock%}
 
 <div class="container my-3">
+    <!--    에러메시지 표시     -->
+    {%if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+        {%for msg in messages%}
+        <strong>{{msg.tags}}</strong>
+        <ul><li>{{msg.message}}</li></ul>
+        {%endfor%}
+    </div>
+    {%endif%}
     <h2 class="border-bottom py-2">{{question.subject}}</h2>
     <div class="card my-3">
         <div class="card-body">
@@ -11,23 +30,46 @@
             </div>
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2">
+                    <div class="m-2">{{question.author.username}}</div>
                     {{question.create_date}}
                 </div>
             </div>
+<!--           210721수정버튼 등록
+                data-uri : data 접두사라는 것이 붙은 데이터 문자열
+                data-uri 가 이미지, 영상, 사운드 파일등의 데이터 전송에도
+                사용할 수 있음
+                data-uri : 파일을 문자열로 변환한것-->
+            <div class="my-3">
+                <a href="{%url 'app1:question_modify' question.id%}"
+                   class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="#" data-uri="{%url 'app1:question_delete' question.id %}"
+                   class="delete btn btn-sm btn-outline-secondary">삭제</a>
+            </div>
+
+
         </div>
     </div>
     <h5 class="border=bottom my-3 py-2">{{question.answer_set.count}}개의 답변이 있읍니다.</h5>
     {% for answer in question.answer_set.all %}
+
     <div class="card my-3">
         <div class="card-body">
             <div class="card-text" style="white-space:pre-line">
+
               {{answer.answer_content}}
             </div>
             <div class="d-flex justify-content-end">
                  <div class="badge badge-right p-2">
+                     <div class="m-2">{{answer.author.username}}</div>
                    {{answer.create_date}}
                  </div>
             </div>
+            {% if request.user == answer.author %}
+                <div class="my-3">
+                    <a href="{%url 'app1:answer_modify' answer.id%}" class="btn btn-sm btn-outline-secondary">답변수정</a>
+                    <a href="#" data-uri="{%url 'app1:answer_delete' answer.id %}" class="delete btn btn-sm btn-outline-secondary">답변삭제</a>
+                </div>
+            {%endif%}
         </div>
     </div>      <!--card my-3 end-->
 
@@ -36,8 +78,22 @@
 
 <form action="{%url 'app1:answer_create' question.id %} "method="post">
 {% csrf_token%}
-<textarea name="answer_content" id="answer_content" rows="15"></textarea>
-<input type="submit" value="답변등록하기" >
+            {%csrf_token%}
+        {%if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {%for field in form%}
+                {%if field.errors%}
+                <strong>{{field.label}}</strong>
+                {{field.errors}}
+                {%endif%}
+            {%endfor%}
+
+        </div>
+        {%endif%}
+    <div class="form-group">
+<textarea {%if not user.is_authenticated %}disable{%endif%} name="answer_content" id="answer_content" rows="5" style="width:1110px"></textarea>
+<input type="submit" value="답변등록하기" class="btn btn-primary">
+    </div>
 </form>
 </div>
 

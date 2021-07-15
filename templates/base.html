@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%static 'bootstrap.min.css'%}">
-    <title>base</title>
+    <script src="{%static 'jquery-3.6.0.min.js'%}"></script>
+    <title>베이스</title>
 </head>
 <body>
+<!-- navbar 추가 210716 -->
+{% include "navbar.html"  %}
+
 {%block content%}
 {%endblock%}
 </body>
