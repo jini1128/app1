@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <a class="navbar-brand" href="{% url 'app1:index' %}">프로젝트</a>
+    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                {%if user.is_authenticated%}
+                <a class="nav-link" href="{% url 'common:logout' %}">{{user.username}}님(로그아웃)😢</a>
+                {% else %}
+
+    <div class="row my-3">
+        <div>
+            <a href="{%url 'common:login'%}">로그인😊</a>
+        </div>
+        <div>
+            <a href="{%url 'common:signup'%}">회원가입👍</a>
+        </div>
+        <div>
+            <a href="{%url 'app1:test'%}">템플릿 적용시키기🙌</a>
+        </div>
+
+                {%endif%}
+            </li>
+        </ul>
+    </div>
+</nav>

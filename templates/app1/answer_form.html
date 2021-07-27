@@ -1,0 +1,16 @@
+  
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-3">
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
+        <div class="form-group">
+            <label for="answer_content">답변내용</label>
+            <textarea class="form-control" name="answer_content" id="answer_content" rows="10">{{ form.answer_content.value|default_if_none:'' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}
